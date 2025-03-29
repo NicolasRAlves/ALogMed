@@ -22,7 +22,7 @@ public class UserService {
     public UserDTO saveUser(User user) {
         User existingByEmail = userRepository.findByEmail(user.getEmail());
         if (existingByEmail != null) {
-            throw new DuplicateUserException("Já existe um usuário com o email: " + user.getEmail());
+            throw new DuplicateUserException("Já existe um usuário com o email:  " + user.getEmail());
         }
 
         User existingByCpf = userRepository.findByCpf(user.getCpf());
