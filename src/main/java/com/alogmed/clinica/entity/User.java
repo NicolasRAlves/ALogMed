@@ -28,6 +28,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+
+    private String sex;
+
     //médicos
     private String crm;
     private String specialty;
@@ -144,6 +147,14 @@ public class User {
 
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public void setPassword(String password) {

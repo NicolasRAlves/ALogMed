@@ -54,6 +54,7 @@ public class UserController {
         existingUser.setStatus(updatedUser.getStatus());
         existingUser.setCrm(updatedUser.getCrm());
         existingUser.setSpecialty(updatedUser.getSpecialty());
+        existingUser.setSpecialty(updatedUser.getSex());
 
         UserDTO savedUser = userService.saveUser(existingUser);
         return ResponseEntity.ok(savedUser);

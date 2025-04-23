@@ -19,6 +19,7 @@ public class UserDTO {
     private String status;
     private String crm;
     private String specialty;
+    private String sex;
 
     public Long getId() {
         return id;
@@ -132,6 +133,14 @@ public class UserDTO {
         this.specialty = specialty;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     public static UserDTO fromEntity(User user) {
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());
@@ -148,6 +157,7 @@ public class UserDTO {
         dto.setStatus(user.getStatus().name());
         dto.setCrm(user.getCrm());
         dto.setSpecialty(user.getSpecialty());
+        dto.setSex(user.getSex());
         return dto;
     }
 }
