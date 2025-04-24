@@ -40,6 +40,8 @@ public class AppointmentService {
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setHospital(dto.hospital());
+        appointment.setType(dto.type());
+        appointment.setSpecialty(dto.specialty());
         appointment.setHospitalAddress(dto.hospitalAddress());
         appointment.setStatus(AppointmentStatus.SCHEDULED);
 
@@ -51,7 +53,9 @@ public class AppointmentService {
                 appointment.getTime(),
                 appointment.getHospital(),
                 appointment.getHospitalAddress(),
-                appointment.getStatus()
+                appointment.getStatus(),
+                appointment.getType(),
+                appointment.getSpecialty()
         );
     }
 

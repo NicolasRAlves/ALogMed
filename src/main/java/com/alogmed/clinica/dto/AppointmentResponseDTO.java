@@ -10,5 +10,7 @@ public record AppointmentResponseDTO (
         LocalTime time,
         String hospital,
         String hospitalAddress,
-        AppointmentStatus status
+        AppointmentStatus status,
+        String type,
+        String specialty
 ){}

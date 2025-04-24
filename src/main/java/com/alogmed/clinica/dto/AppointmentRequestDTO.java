@@ -9,5 +9,7 @@ public record AppointmentRequestDTO (
     LocalDate date,
     LocalTime time,
     String hospital,
-    String hospitalAddress
+    String hospitalAddress,
+    String type,
+    String specialty
 ){}
