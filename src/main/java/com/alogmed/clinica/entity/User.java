@@ -3,6 +3,8 @@ package com.alogmed.clinica.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "users")
@@ -164,4 +166,10 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> doctorAppointments;
+
+    @OneToMany(mappedBy = "patient")
+    private List<Appointment> patientAppointments;
 }
