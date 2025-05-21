@@ -1,15 +1,31 @@
 package com.alogmed.clinica.controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.alogmed.clinica.dto.report.PatientReportDTO;
+import com.alogmed.clinica.service.ReportService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
 @RestController
 @RequestMapping("/api/reports")
 public class ReportController {
 
+    private final ReportService reportService;
+
+    public ReportController(ReportService reportService) {
+        this.reportService = reportService;
+    }
+
+    // 🔹 Relatório detalhado de paciente
+    @GetMapping("/patient/{id}/details")
+    public ResponseEntity<PatientReportDTO> getPatientDetails(@PathVariable Long id) {
+        return ResponseEntity.ok(reportService.getPatientDetailedReport(id));
+    }
+
+    // 🔹 (opcional) manter mocks temporariamente enquanto implementa os reais
     @GetMapping("/summary")
-    public Map<String, Object> getSummary(){
+    public Map<String, Object> getSummary() {
         Map<String, Object> mock = new HashMap<>();
         mock.put("totalAgendamentos", 42);
         mock.put("totalFinalizadas", 25);
@@ -38,7 +54,7 @@ public class ReportController {
     @GetMapping("/cancellations")
     public Map<String, Object> getCancellationRate() {
         Map<String, Object> result = new HashMap<>();
-        result.put("taxaCancelamento", 16.67); // porcentagem fake
+        result.put("taxaCancelamento", 16.67);
         return result;
     }
 }
