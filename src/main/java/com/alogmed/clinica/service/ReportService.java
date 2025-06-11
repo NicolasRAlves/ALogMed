@@ -27,21 +27,16 @@ public class ReportService {
 
     /**
      * Gera o relatório detalhado de um paciente com base no ID.
-     * Inclui informações do paciente e lista de prontuários com prescrições.
-     *
-     * @param patientId ID do paciente
-     * @return PatientReportDTO com os dados do relatório
-     * @throws RuntimeException se o paciente não for encontrado
      */
     public PatientReportDTO getPatientDetailedReport(Long patientId) {
-        // Busca o paciente pelo ID
+        // 1. Buscar paciente
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado com ID: " + patientId));
 
-        // Busca todos os prontuários do paciente
+        // 2. Buscar registros médicos do paciente
         List<MedicalRecord> records = medicalRecordRepository.findByPatientId(patientId);
 
-        // Cria o DTO do relatório
+        // 3. Montar DTO com os dados
         PatientReportDTO report = new PatientReportDTO();
         report.setName(patient.getName());
         report.setAge(calculateAge(patient.getBirthDate()));
@@ -53,10 +48,7 @@ public class ReportService {
     }
 
     /**
-     * Mapeia uma lista de MedicalRecord para uma lista de RecordBlock.
-     *
-     * @param records Lista de prontuários
-     * @return Lista de RecordBlock para o DTO
+     * Converte registros médicos em blocos de relatório.
      */
     private List<PatientReportDTO.RecordBlock> mapRecords(List<MedicalRecord> records) {
         return records.stream().map(record -> {
@@ -70,32 +62,24 @@ public class ReportService {
     }
 
     /**
-     * Mapeia uma lista de Prescription para uma lista de PrescriptionDTO.
-     *
-     * @param prescriptions Lista de prescrições
-     * @return Lista de PrescriptionDTO para o DTO
+     * Converte prescrições em DTOs.
      */
     private List<PrescriptionDTO> mapPrescriptions(List<Prescription> prescriptions) {
-        return prescriptions.stream().map(prescription -> {
+        return prescriptions.stream().map(p -> {
             PrescriptionDTO dto = new PrescriptionDTO();
-            dto.setName(prescription.getName());
-            dto.setPosology(prescription.getPosology());
-            dto.setStartDate(prescription.getStartDate());
-            dto.setDuration(prescription.getDuration());
+            dto.setName(p.getName());
+            dto.setPosology(p.getPosology());
+            dto.setStartDate(p.getStartDate());
+            dto.setDuration(p.getDuration());
             return dto;
         }).collect(Collectors.toList());
     }
 
     /**
-     * Calcula a idade com base na data de nascimento.
-     *
-     * @param birthDate Data de nascimento
-     * @return Idade em anos
+     * Calcula a idade do paciente.
      */
     private int calculateAge(LocalDate birthDate) {
-        if (birthDate == null) {
-            return 0; // Ou lançar uma exceção, dependendo do requisito
-        }
+        if (birthDate == null) return 0;
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
 }

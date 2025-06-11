@@ -21,7 +21,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
-        UserDTO savedUser = userService.saveUser(user);
+        UserDTO savedUser = userService.createUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
@@ -54,9 +54,8 @@ public class UserController {
         existingUser.setStatus(updatedUser.getStatus());
         existingUser.setCrm(updatedUser.getCrm());
         existingUser.setSpecialty(updatedUser.getSpecialty());
-        existingUser.setSpecialty(updatedUser.getSex());
-
-        UserDTO savedUser = userService.saveUser(existingUser);
+        existingUser.setSex(updatedUser.getSex());
+        UserDTO savedUser = userService.createUser(existingUser);
         return ResponseEntity.ok(savedUser);
     }
 
@@ -84,7 +83,7 @@ public class UserController {
     public ResponseEntity<UserDTO> deactivateUser(@PathVariable Long id) {
         User user = userService.findById(id);
         user.setStatus(Status.INACTIVE);
-        UserDTO deactivatedUser = userService.saveUser(user);
+        UserDTO deactivatedUser = userService.createUser(user);
         return ResponseEntity.ok(deactivatedUser);
     }
 }
