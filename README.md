@@ -52,7 +52,7 @@ A concepção e idealização do projeto foram lideradas por **Gabriel de Lima C
 ## 🛠️ Tecnologias Utilizadas
 
 * **Backend:** Java 17, Spring Boot 3, Spring Security, JPA/Hibernate, Maven
-* **Frontend:** React 18, TypeScript, Vite, TailwindCSS, Axios
+* **Frontend:** React 18, TypeScript, Vite, TailwindCSS, Axios ([ALogMed FrontEnd](https://github.com/brucesantss/alogmed-http))
 * **Banco de Dados:** MySQL
 * **Autenticação:** JWT (JSON Web Tokens)
 
