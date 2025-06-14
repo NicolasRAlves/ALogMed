@@ -5,12 +5,12 @@ O sistema **ALog Med** é uma plataforma completa projetada para automatizar o a
 ---
 ## 👥 Integrantes do Projeto
 
-* **Diogo da Silva Almeida** ([xDGxx](https://github.com/xDGxx))
-* **Erika de Oliveira Nunes Carneiro** ([Erikha-onc](https://github.com/Erikha-onc))
-* **Gabriel de Lima Carreiro** *(Líder do Grupo)* ([gabcrr](https://github.com/gabcrr))
-* **Nicolas Rodrigues Alves** *(Product Owner)* ([NicolasRAlves](https://github.com/NicolasRAlves))
-* **Pedro Ballastreri Sclaffani Sampaio** ([BallastreriPedro](https://github.com/BallastreriPedro))
-* **Ryan Jesus** ([brucesantss](https://github.com/brucesantss))
+* **Diogo da Silva Almeida** 
+* **Erika de Oliveira Nunes Carneiro** 
+* **Gabriel de Lima Carreiro** *(Líder do Grupo)*
+* **Nicolas Rodrigues Alves** *(Product Owner)* 
+* **Pedro Ballastreri Sclaffani Sampaio** 
+* **Ryan Jesus** 
 
 ---
 
