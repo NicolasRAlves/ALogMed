@@ -4,13 +4,16 @@ import com.alogmed.clinica.dto.AppointmentRequestDTO;
 import com.alogmed.clinica.dto.AppointmentResponseDTO;
 import com.alogmed.clinica.entity.Appointment;
 import com.alogmed.clinica.entity.AppointmentStatus;
+import com.alogmed.clinica.entity.Role;
 import com.alogmed.clinica.entity.User;
 import com.alogmed.clinica.repository.AppointmentRepository;
 import com.alogmed.clinica.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -26,12 +29,12 @@ public class AppointmentService {
     @Transactional
     public AppointmentResponseDTO schedule(AppointmentRequestDTO dto) {
         User doctor = userRepository.findById(dto.doctorId())
-                .orElseThrow(() -> new IllegalArgumentException("Doctor not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Médico não encontrado"));
         User patient = userRepository.findById(dto.patientId())
-                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Paciente não encontrado"));
 
         if (appointmentRepository.existsByDoctorAndDateAndTime(doctor, dto.date(), dto.time())) {
-            throw new IllegalArgumentException("Doctor is not available at this time.");
+            throw new IllegalArgumentException("Médico não está disponível neste horário.");
         }
 
         Appointment appointment = new Appointment();
@@ -40,34 +43,55 @@ public class AppointmentService {
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setHospital(dto.hospital());
+        appointment.setType(dto.type());
+        appointment.setSpecialty(dto.specialty());
         appointment.setHospitalAddress(dto.hospitalAddress());
         appointment.setStatus(AppointmentStatus.SCHEDULED);
 
-        appointmentRepository.save(appointment);
-
-        return new AppointmentResponseDTO(
-                appointment.getId(),
-                appointment.getDate(),
-                appointment.getTime(),
-                appointment.getHospital(),
-                appointment.getHospitalAddress(),
-                appointment.getStatus()
-        );
+        Appointment savedAppointment = appointmentRepository.save(appointment);
+        return AppointmentResponseDTO.fromEntity(savedAppointment);
     }
 
     @Transactional
     public void updateStatus(Long id, AppointmentStatus status) {
         Appointment appt = appointmentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Appointment not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Agendamento não encontrado"));
         appt.setStatus(status);
         appointmentRepository.save(appt);
     }
 
-    public List<Appointment> getHistory(User user) {
-        return appointmentRepository.findByPatient(user); // ou por médico se necessário
+    @Transactional(readOnly = true)
+    public List<AppointmentResponseDTO> getMyAppointments(User patient) {
+        List<Appointment> appointments = appointmentRepository.findByPatientAndStatusIn(
+                patient,
+                Arrays.asList(AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED)
+        );
+        return appointments.stream()
+                .map(AppointmentResponseDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public List<Appointment> getMyAppointments(User user) {
-        return appointmentRepository.findByPatient(user); // ajustar lógica conforme o usuário logado
+    @Transactional(readOnly = true)
+    public List<AppointmentResponseDTO> getHistory(User patient) {
+        List<Appointment> appointments = appointmentRepository.findByPatientAndStatusIn(
+                patient,
+                Arrays.asList(AppointmentStatus.FINISHED, AppointmentStatus.CANCELLED)
+        );
+        return appointments.stream()
+                .map(AppointmentResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<AppointmentResponseDTO> getAppointmentsByDoctor(User doctor) {
+        if (doctor.getRole() != Role.DOCTOR) {
+            throw new IllegalArgumentException("O ID fornecido não pertence a um doutor.");
+        }
+
+        List<Appointment> appointments = appointmentRepository.findByDoctor(doctor);
+
+        return appointments.stream()
+                .map(AppointmentResponseDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 }
