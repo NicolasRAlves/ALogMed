@@ -25,18 +25,12 @@ public class ReportService {
         this.medicalRecordRepository = medicalRecordRepository;
     }
 
-    /**
-     * Gera o relatório detalhado de um paciente com base no ID.
-     */
     public PatientReportDTO getPatientDetailedReport(Long patientId) {
-        // 1. Buscar paciente
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado com ID: " + patientId));
 
-        // 2. Buscar registros médicos do paciente
         List<MedicalRecord> records = medicalRecordRepository.findByPatientId(patientId);
 
-        // 3. Montar DTO com os dados
         PatientReportDTO report = new PatientReportDTO();
         report.setName(patient.getName());
         report.setAge(calculateAge(patient.getBirthDate()));
@@ -47,23 +41,21 @@ public class ReportService {
         return report;
     }
 
-    /**
-     * Converte registros médicos em blocos de relatório.
-     */
     private List<PatientReportDTO.RecordBlock> mapRecords(List<MedicalRecord> records) {
         return records.stream().map(record -> {
             PatientReportDTO.RecordBlock block = new PatientReportDTO.RecordBlock();
             block.setDescription(record.getDescription());
             block.setDiagnosis(record.getDiagnosis());
-            block.setDate(record.getDate());
-            block.setPrescriptions(mapPrescriptions(record.getPrescriptions()));
+            block.setDate(record.getDate()); // Linha corrigida
+
+            if (record.getPrescriptions() != null) {
+                block.setPrescriptions(mapPrescriptions(record.getPrescriptions()));
+            }
+
             return block;
         }).collect(Collectors.toList());
     }
 
-    /**
-     * Converte prescrições em DTOs.
-     */
     private List<PrescriptionDTO> mapPrescriptions(List<Prescription> prescriptions) {
         return prescriptions.stream().map(p -> {
             PrescriptionDTO dto = new PrescriptionDTO();
@@ -75,9 +67,6 @@ public class ReportService {
         }).collect(Collectors.toList());
     }
 
-    /**
-     * Calcula a idade do paciente.
-     */
     private int calculateAge(LocalDate birthDate) {
         if (birthDate == null) return 0;
         return Period.between(birthDate, LocalDate.now()).getYears();

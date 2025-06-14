@@ -6,9 +6,8 @@ public class PrescriptionDTO {
     private String name;
     private String posology;
     private LocalDate startDate;
-    private int duration;
+    private String duration;
 
-    // Getters e Setters
     public String getName() {
         return name;
     }
@@ -33,11 +32,11 @@ public class PrescriptionDTO {
         this.startDate = startDate;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 }

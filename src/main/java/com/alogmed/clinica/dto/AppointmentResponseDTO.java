@@ -38,7 +38,6 @@ public record AppointmentResponseDTO(
         String type,
         String specialty
 ) {
-    // Método estático para converter a Entidade para este DTO
     public static AppointmentResponseDTO fromEntity(Appointment appointment) {
         return new AppointmentResponseDTO(
                 appointment.getId(),
@@ -49,8 +48,8 @@ public record AppointmentResponseDTO(
                 appointment.getHospital(),
                 appointment.getHospitalAddress(),
                 appointment.getStatus(),
-                appointment.getType(),      // CORRIGIDO: Agora pega a String diretamente
-                appointment.getSpecialty()  // CORRIGIDO: Agora pega a String diretamente
+                appointment.getType(),
+                appointment.getSpecialty()
         );
     }
 }

@@ -2,7 +2,7 @@ package com.alogmed.clinica;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.EnableTransactionManagement; // 1. Adicione este import
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @SpringBootApplication

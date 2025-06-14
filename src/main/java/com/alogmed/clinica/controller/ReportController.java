@@ -77,16 +77,11 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    /**
-     * Retorna um relatório detalhado com dados do paciente, suas consultas e prescrições.
-     *
-     * Exemplo de uso: GET /api/reports/patient/10/details
-     */
+
     @GetMapping("/patient/{id}/details")
     public ResponseEntity<PatientReportDTO> getPatientDetails(@PathVariable Long id) {
         PatientReportDTO report = reportService.getPatientDetailedReport(id);
         return ResponseEntity.ok(report);
     }
 
-    // (Mocks temporários — podem ser removidos no futuro)
 }
